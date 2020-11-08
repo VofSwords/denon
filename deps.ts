@@ -36,6 +36,7 @@ export {
   globToRegExp,
   relative,
   resolve,
+  isAbsolute,
 } from "https://deno.land/std@0.76.0/path/mod.ts";
 
 // event control

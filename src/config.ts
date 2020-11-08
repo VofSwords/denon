@@ -16,6 +16,7 @@ import type { Template } from "./templates.ts";
 import type { WatcherConfig } from "./watcher.ts";
 
 import { merge } from "./merge.ts";
+import { configGlobToString } from "./globConfig.js";
 
 const logger = log.create("conf");
 
@@ -155,7 +156,7 @@ export async function readConfig(
       if (parsed) {
         config = merge(
           config,
-          cleanConfig(parsed as Partial<DenonConfig>, file),
+          await configGlobToString( cleanConfig(parsed as Partial<DenonConfig>, file)),
         );
       }
     } else {
@@ -165,26 +166,26 @@ export async function readConfig(
           const parsed = await readYaml(file);
           config = merge(
             config,
-            cleanConfig(parsed as Partial<DenonConfig>, file),
+            await configGlobToString( cleanConfig(parsed as Partial<DenonConfig>, file)),
           );
         } else if (/^\.json$/.test(extension)) {
           const parsed = await readJson(file);
           config = merge(
             config,
-            cleanConfig(parsed as Partial<DenonConfig>, file),
+            await configGlobToString( cleanConfig(parsed as Partial<DenonConfig>, file)),
           );
         } else {
           try {
             const parsed = await readJson(file);
             config = merge(
               config,
-              cleanConfig(parsed as Partial<DenonConfig>, file),
+              await configGlobToString( cleanConfig(parsed as Partial<DenonConfig>, file)),
             );
           } catch {
             const parsed = await readYaml(file);
             config = merge(
               config,
-              cleanConfig(parsed as Partial<DenonConfig>, file),
+              await configGlobToString( cleanConfig(parsed as Partial<DenonConfig>, file)),
             );
           }
         }
